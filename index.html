@@ -64,6 +64,14 @@
 <ul class="app-list" id="appList"></ul>
 </div>
 <div class="card">
+<div class="card-head">
+<h2>Installed on this device</h2>
+<span class="muted" id="installedCount">&mdash;</span>
+</div>
+<p class="hint"><code>apex_installed_apps</code> from Apex Store. Uninstalling here drops the app's offline cache and removes its icon from ApexOS live.</p>
+<ul class="app-list" id="installedList"></ul>
+</div>
+<div class="card">
 <h2>Add custom web app</h2>
 <form id="addAppForm" class="form-row" autocomplete="off">
 <input class="input" name="name" placeholder="App name" aria-label="App name" required>
@@ -189,6 +197,7 @@
 </div>
 </div>
 <script src="./config.js"></script>
+<script src="./registry.js"></script>
 <script src="./ui.js"></script>
 <script src="./section-apps.js"></script>
 <script src="./section-ai.js"></script>
