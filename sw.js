@@ -2,7 +2,7 @@
    All paths are relative so this works at /apps/settings/ and as a standalone PWA. */
 'use strict';
 
-const VERSION = 'v1';
+const VERSION = 'v2';
 const CACHE = 'apex-settings-' + VERSION;
 
 const SHELL = [
@@ -11,6 +11,7 @@ const SHELL = [
   './styles.css',
   './sections.css',
   './config.js',
+  './registry.js',
   './ui.js',
   './section-apps.js',
   './section-ai.js',
