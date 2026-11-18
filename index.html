@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0c14">
+<meta name="description" content="ApexOS control panel: apps, AI keys, offline storage, appearance and backup.">
+<title>Apex Settings</title>
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="./sections.css">
+</head>
+<body data-wallpaper="aurora" data-layout="desktop">
+<div class="shell">
+<aside class="sidebar">
+<div class="brand">
+<img src="./icons/icon-192.png" alt="" width="36" height="36">
+<div class="brand-text">
+<strong>Apex Settings</strong>
+<span>ApexOS control panel</span>
+</div>
+</div>
+<nav class="nav" role="tablist" aria-label="Settings sections">
+<button class="nav-item is-active" role="tab" aria-selected="true" data-section="apps">
+<span class="nav-dot" aria-hidden="true"></span><span>Apps &amp; Launcher</span>
+</button>
+<button class="nav-item" role="tab" aria-selected="false" data-section="ai">
+<span class="nav-dot" aria-hidden="true"></span><span>AI &amp; API Keys</span>
+</button>
+<button class="nav-item" role="tab" aria-selected="false" data-section="storage">
+<span class="nav-dot" aria-hidden="true"></span><span>Offline &amp; Storage</span>
+</button>
+<button class="nav-item" role="tab" aria-selected="false" data-section="appearance">
+<span class="nav-dot" aria-hidden="true"></span><span>Appearance &amp; Mode</span>
+</button>
+<button class="nav-item" role="tab" aria-selected="false" data-section="backup">
+<span class="nav-dot" aria-hidden="true"></span><span>Backup &amp; Reset</span>
+</button>
+</nav>
+<p class="side-note">Settings live in <code>apex_os_config</code> on this device and are broadcast to ApexOS live.</p>
+</aside>
+<main class="main">
+<header class="topbar">
+<div>
+<p class="eyebrow">ApexOS</p>
+<h1 id="sectionTitle">Apps &amp; Launcher</h1>
+</div>
+<div class="topbar-actions">
+<span class="pill" id="netState" data-tone="ok">Online</span>
+<span class="pill" id="saveState" data-tone="ok">Synced</span>
+<button class="btn ghost" type="button" id="exportQuick">Export</button>
+</div>
+</header>
+<div class="pages">
+<section class="page is-active" id="section-apps" aria-labelledby="sectionTitle">
+<div class="card">
+<div class="card-head">
+<h2>Home screen apps</h2>
+<span class="muted" id="appCount">22 apps</span>
+</div>
+<p class="hint">Toggle which apps appear on the ApexOS home screen and edit where each one launches.</p>
+<ul class="app-list" id="appList"></ul>
+</div>
+<div class="card">
+<h2>Add custom web app</h2>
+<form id="addAppForm" class="form-row" autocomplete="off">
+<input class="input" name="name" placeholder="App name" aria-label="App name" required>
+<input class="input" name="url" placeholder="https://example.com or ./apps/my-app/" aria-label="Launch URL" required>
+<button class="btn" type="submit">+ Add Custom Web App</button>
+</form>
+<p class="hint">Custom apps are stored in your config and show up on the home screen like the built-in ones.</p>
+</div>
+</section>
+<section class="page" id="section-ai" aria-labelledby="sectionTitle">
+<div class="card">
+<h2>Apex AI Router</h2>
+<label class="field">
+<span>Router endpoint</span>
+<input class="input" id="routerUrl" type="url" placeholder="https://your-apex-router.workers.dev/v1/chat/completions" spellcheck="false">
+</label>
+<label class="field">
+<span>Default model</span>
+<select class="input" id="modelSelect"></select>
+</label>
+<label class="field">
+<span>Or type a model id</span>
+<input class="input" id="customModel" type="text" placeholder="e.g. llama-3.1-70b-versatile" spellcheck="false">
+</label>
+<div class="row">
+<button class="btn" type="button" id="testRouter">Test Connection</button>
+<span class="pill" id="keyStatus" data-tone="ok">No provider keys saved yet</span>
+</div>
+<p class="result" id="aiResult" data-tone="info">Point this at your Apex AI Router Worker, then test it.</p>
+</div>
+<div class="card">
+<h2>Provider keys (this device only)</h2>
+<p class="hint">Keys are written to <code>apex_os_config</code> in this browser's storage. They are never bundled into the app or sent anywhere except the router you configure.</p>
+<label class="field"><span>Groq</span><input class="input" id="key-groq" type="password" spellcheck="false" placeholder="gsk_..."></label>
+<label class="field"><span>Google Gemini</span><input class="input" id="key-gemini" type="password" spellcheck="false" placeholder="AIza..."></label>
+<label class="field"><span>Mistral</span><input class="input" id="key-mistral" type="password" spellcheck="false" placeholder="..."></label>
+<label class="field"><span>Cloudflare Workers AI</span><input class="input" id="key-cloudflare" type="password" spellcheck="false" placeholder="token"></label>
+</div>
+</section>
+<section class="page" id="section-storage" aria-labelledby="sectionTitle">
+<div class="card">
+<h2>Storage quota</h2>
+<div class="meter"><span id="usageBar" data-level="low"></span></div>
+<div class="meter-legend"><strong id="usageText">measuring…</strong><span class="muted" id="quotaText"></span></div>
+<div class="row space">
+<span id="persistState">Checking persistence…</span>
+<button class="btn" type="button" id="persistBtn">Request Lock</button>
+</div>
+</div>
+<div class="card">
+<div class="card-head">
+<h2>Cache Storage</h2>
+<button class="btn ghost small" type="button" id="refreshStorage">Refresh</button>
+</div>
+<ul class="cache-list" id="cacheList"></ul>
+<div class="row">
+<button class="btn ghost" type="button" id="updateSw">Force Update Service Worker</button>
+</div>
+</div>
+</section>
+<section class="page" id="section-appearance" aria-labelledby="sectionTitle">
+<div class="card">
+<h2>UI mode</h2>
+<div class="mode-group" id="modeGroup"></div>
+</div>
+<div class="card">
+<h2>Accent colour</h2>
+<div class="accent-grid" id="accentGrid"></div>
+<label class="field inline">
+<span>Custom accent</span>
+<input type="color" id="accentPicker" value="#7c8cff">
+</label>
+</div>
+<div class="card">
+<h2>Wallpaper preset</h2>
+<div class="wall-grid" id="wallGrid"></div>
+</div>
+<div class="card">
+<h2>UI scale</h2>
+<label class="field inline">
+<span>Scale</span>
+<input type="range" id="scaleRange" min="80" max="140" step="5" value="100">
+<strong id="scaleValue">100%</strong>
+</label>
+</div>
+</section>
+<section class="page" id="section-backup" aria-labelledby="sectionTitle">
+<div class="card">
+<h2>Backup</h2>
+<p class="muted" id="backupSummary"></p>
+<div class="row">
+<button class="btn" type="button" id="exportBtn">Export OS Config (.json)</button>
+<button class="btn ghost" type="button" id="importBtn">Import Config (.json)</button>
+<input type="file" id="importInput" accept="application/json,.json" hidden>
+</div>
+<div class="drop" id="dropZone">Drop an <code>apex-os-config.json</code> here, or click to choose a file</div>
+</div>
+<div class="card danger">
+<h2>Factory reset</h2>
+<p class="hint">Erases the local ApexOS config, provider keys and cached app data on this device.</p>
+<button class="btn danger" type="button" id="resetBtn">Factory Reset ApexOS</button>
+</div>
+</section>
+</div>
+</main>
+</div>
+<nav class="tabbar" aria-label="Settings sections">
+<button class="tab-item is-active" data-section="apps"><span aria-hidden="true">▦</span>Apps</button>
+<button class="tab-item" data-section="ai"><span aria-hidden="true">✦</span>AI</button>
+<button class="tab-item" data-section="storage"><span aria-hidden="true">⛁</span>Storage</button>
+<button class="tab-item" data-section="appearance"><span aria-hidden="true">◐</span>Look</button>
+<button class="tab-item" data-section="backup"><span aria-hidden="true">⭳</span>Backup</button>
+</nav>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="modal" id="modal" hidden>
+<div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="resetTitle">
+<h2 id="resetTitle">Factory reset ApexOS?</h2>
+<p>This clears <code>apex_os_config</code>, your provider keys and the app list on this device. Exported backups stay on your device.</p>
+<div class="row end">
+<button class="btn ghost" type="button" id="cancelReset">Cancel</button>
+<button class="btn danger" type="button" id="confirmReset">Erase everything</button>
+</div>
+</div>
+</div>
+<script src="./config.js"></script>
+<script src="./ui.js"></script>
+<script src="./section-apps.js"></script>
+<script src="./section-ai.js"></script>
+<script src="./section-storage.js"></script>
+<script src="./section-appearance.js"></script>
+<script src="./section-backup.js"></script>
+<script src="./boot.js"></script>
+</body>
+</html>
