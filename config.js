@@ -14,8 +14,6 @@
 
   var APPS = [
     ['ai', 'Apex AI', './apps/ai/'],
-    ['automation', 'Automation', './apps/automation/'],
-    ['drive', 'Apex Drive', './apps/drive/'],
     ['auth', 'Apex Auth', './apps/auth/'],
     ['vault', 'Apex Vault', './apps/vault/'],
     ['shield', 'Apex Shield', './apps/shield/'],
